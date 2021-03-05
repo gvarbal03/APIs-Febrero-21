@@ -1,0 +1,19 @@
+{
+	"id": "fb63c96a-acd5-434a-a50a-706b364078ad",
+	"name": "Environment Practica 4",
+	"values": [
+		{
+			"key": "root_4",
+			"value": "reqres.in",
+			"enabled": true
+		},
+		{
+			"key": "ptr",
+			"value": "https://",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2021-03-04T05:33:33.253Z",
+	"_postman_exported_using": "Postman/8.0.6"
+}
