@@ -1,0 +1,671 @@
+{
+	"info": {
+		"_postman_id": "6019cf19-eb71-473e-bf62-2790ae70d6ed",
+		"name": "Practica_4",
+		"description": "Practica 4 del curso APIS 11/02/21\r\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Lista de Usuarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar un header\", function(){\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar Codigo Correcto\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el campo pagina igual a 1\", function(){\r",
+							"    const respuesta = pm.response.json();\r",
+							"    //console.log (\"Respuesta en variable:\", respuesta.page);\r",
+							"    pm.expect(respuesta.page).to.eql(1)\r",
+							"})\r",
+							"\r",
+							"/*pm.test(\"Probar Content type  es igual  a la aplicacion/json\",() =>{\r",
+							"    pm.expect(pm.response.headers.get('Content-type'))to.eql('application/json;charset=utf-8')\r",
+							"});*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "query a base de datos"
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta de usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar un header\", function(){\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar Codigo Correcto\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Consulta puntual no hay paginador undefined\", function(){\r",
+							"    //dentro de esta función\r",
+							"    const respuesta = pm.response.json();\r",
+							"    console.log (\"Respuesta en variable:\", respuesta.page);\r",
+							"    pm.expect(respuesta.page).to.eql(undefined)\r",
+							"})\r",
+							"\r",
+							"/*pm.test(\"Probar Content type  es igual  a la aplicacion/json\",() =>{\r",
+							"    pm.expect(pm.response.headers.get('Content-type'))to.eql('application/json;charset=utf-8')\r",
+							"});*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users/2",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario no encontrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Probar error esperado not found 404\", function(){\r",
+							"    pm.response.to.be.not.ok;\r",
+							"});\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users/23",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lista de recursos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo 200 y Valor Totales\",function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const respuesta = pm.response.json();\r",
+							"    console.log (\"Variable\", respuesta);\r",
+							"    //Validación total de registros sea númerico\r",
+							"    pm.expect(respuesta.total).to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar un header\", function(){\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el campo pagina igual a 1\", function(){\r",
+							"    const respuesta = pm.response.json();\r",
+							"    pm.expect(respuesta.page).to.eql(1)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_4}}/api/unknown",
+					"protocol": "https",
+					"host": [
+						"{{root_4}}"
+					],
+					"path": [
+						"api",
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busqueda de un valor de lista",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo 200 y al menos un identificador\",function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const respuesta = pm.response.json();\r",
+							"    console.log (\"Respuesta\", respuesta);\r",
+							"    //Validación de al menos un ID de registro\r",
+							"    pm.expect(respuesta.data.id).to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar un header\", function(){\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/unknown/2",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"unknown",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busqueda de valor inexistente en lista",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Probar error esperado not found 404\", function(){\r",
+							"    pm.response.to.be.not.ok;\r",
+							"});\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users/477",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"477"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Usuario - 201 (todo string)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    //validación intencional ya que se espera un 201\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test (\"Valor creado exitosamente\", function(){\r",
+							"    console.log (respuesta);\r",
+							"    //se identificad que el ID de creación se almacena como cadena  \r",
+							"    pm.expect (respuesta.id).to.be.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualización PUT de usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test (\"Campo updatedAt actualizado exitosamente\", function(){\r",
+							"    console.log (respuesta.updatedAt);\r",
+							"    //se identificad que la fecha de creación se almacena como cadena  \r",
+							"    pm.expect (respuesta.updatedAt).to.be.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users/2",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualización PATCH de usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test (\"Campo updatedAt actualizado exitosamente\", function(){\r",
+							"    console.log (respuesta.updatedAt);\r",
+							"    //se identificad que la fecha de creación se almacena como cadena  \r",
+							"    pm.expect (respuesta.updatedAt).to.be.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users/2",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Intento Deleate - 204 contenido no encontrado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    //validación intencional ya que se espera un 201\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users/3",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registro de usuario fallido 201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"MAla estructuras del request\", function(){\r",
+							"    //validación intencional ya que se espera un 201\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test (\"Validar mensaje de error correo o nombre de usuario peridos\", function(){\r",
+							"    console.log (respuesta);\r",
+							"    //se identificad que el ID de creación se almacena como cadena  \r",
+							"    pm.expect (respuesta.error).to.be.eql('Missing email or username');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "email",
+						"value": "eve.holt@reqres.in",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "username",
+						"value": "eve.holt@reqres.in",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/register",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login 201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Probar respuesta exitosa\", function(){\r",
+							"    //validación intencional ya que se espera un 201\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test (\"Valor creado exitosamente\", function(){\r",
+							"    console.log (respuesta);\r",
+							"    //se identificad que el ID de creación se almacena como cadena  \r",
+							"    pm.expect (respuesta.id).to.be.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/login/4",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"login",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Fallido 400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const respuesta = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Código de error 400\", function(){\r",
+							"    //validación intencional ya que se espera un 201\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400,404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/login",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Demora en respuesta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo 200 y al menos un identificador\",function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const respuesta = pm.response.json();\r",
+							"    console.log (\"Respuesta\", respuesta);\r",
+							"    //Validación de al menos un ID de registro\r",
+							"    pm.expect(respuesta.data[0].id).to.be.a('number');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar que responde un JSON\",function(){\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Probar un header\", function(){\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el campo pagina igual a 1\", function(){\r",
+							"    const respuesta = pm.response.json();\r",
+							"    //console.log (\"Respuesta en variable:\", respuesta.page);\r",
+							"    pm.expect(respuesta.page).to.eql(1)\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_4}}/api/users?delay=2",
+					"host": [
+						"{{ptr}}{{root_4}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "delay",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
