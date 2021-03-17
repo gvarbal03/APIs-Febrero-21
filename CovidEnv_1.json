@@ -1,0 +1,19 @@
+{
+	"id": "f2e5d6b0-4dbc-4d32-ba14-41491ae49af5",
+	"name": "CovidEnv Copy",
+	"values": [
+		{
+			"key": "root_cov1",
+			"value": "covid19-api.com",
+			"enabled": true
+		},
+		{
+			"key": "ptr",
+			"value": "https://",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2021-03-17T05:28:56.237Z",
+	"_postman_exported_using": "Postman/8.0.7"
+}
