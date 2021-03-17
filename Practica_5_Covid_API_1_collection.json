@@ -1,0 +1,881 @@
+{
+	"info": {
+		"_postman_id": "ea5990f5-83b0-4578-8f38-493708d61548",
+		"name": "Practica_5_Covid_API_1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consulta por País",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación del código 200\",() => {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.status(200);\r",
+							"    //Ambas formas validan el código 200\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"    //Otra manera de validar el estado\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"    //Ok referenciado de status\r",
+							"    //pm.expect(pm.response.code.name).to.has(\"OK\");\r",
+							"});\r",
+							"\r",
+							"// Validación puntual al número de código\r",
+							"pm.test(\"Probar code status este dentro de unos códigos\", function (){\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validación response en formato jason\", ()=>{\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar campos en el body responde\", function(){\r",
+							"    //colocamos en una constante toda la respuesta en formato json\r",
+							"    const responseJson = pm.response.json();\r",
+							"    //vamos a imprimir en consola el response\r",
+							"    //console.log (\"Respuesta:\", responseJson);\r",
+							"    //Las siguientes dos impresiones son para identificar el manejo de Array\r",
+							"    //console.log(\"Campo1:\", responseJson.country);\r",
+							"    //console.log(\"Campo2:\", responseJson[0].country);\r",
+							"  \r",
+							"    //Esperamos el campo country dentro de la variable declarada\r",
+							"    pm.expect(responseJson[0].country).to.eql(\"Mexico\")\r",
+							"    //Valida que el formato del campo de respuesta en este caso cadena\r",
+							"    pm.expect(responseJson[0].country).to.be.a(\"string\")\r",
+							"    pm.expect(responseJson[0].confirmed).to.be.a(\"number\");\r",
+							"    //Practica para valores constantes, dinámicos no recomendable\r",
+							"    pm.expect(responseJson[0].country).to.have.lengthOf(6);\r",
+							"    //en lugar de undefined se puede utilizar empty o null\r",
+							"    pm.expect(responseJson.country).to.be.undefined;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar si la respuesta incluye un texto\", function(){\r",
+							"    //console.log(\"Respuesta formato texto: \",  pm.response.text());\r",
+							"    pm.expect(pm.response.text()).to.include(\"count\")\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 850ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(850);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar campos\", function (){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"Respuesta:\", responseJson);\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/country?name=México&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"country"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "México"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta por país Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación del código 200\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validación response en formato jason\", ()=>{\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar campos no se encuentran definidos\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.country).to.be.undefined;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 950ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(950);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/country?name=Patzcuaro&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"country"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Patzcuaro"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Todos Los Paises",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta exitoso\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201,204]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validación response en formato jason\", ()=>{\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar estructura de entidad País\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson[0].country).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].code).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].confirmed).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].recovered).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].critical).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].deaths).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].lastChange).to.be.a(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar si la respuesta contiene conteos\", function(){\r",
+							"    pm.expect(pm.response.text()).to.include(\"count\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 950ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(950);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/country/all",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"country",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Todos Los Paises Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([400,404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validación response en formato html\", function(){\r",
+							"    console.log(\"Respuesta formato texto: \",  pm.response.text());\r",
+							"    pm.expect(pm.response.text()).to.include(\"<html>\")\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/country/todos",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"country",
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Todos Los Paises Por Código Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([400,404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validación response en formato jason\", ()=>{\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/country/code",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"country",
+						"code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Todos Los Paises Por Código",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar estructura de entidad País\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson[0].country).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].code).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].confirmed).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].recovered).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].critical).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].deaths).to.be.a(\"number\");\r",
+							"    pm.expect(responseJson[0].lastChange).to.be.a(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/country/code?code=MX",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"country",
+						"code"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "MX"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Reporte por Fecha de Todos los Paises",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(10000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar estructura de entidad País\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log(\"respuesta\", responseJson);\r",
+							"    pm.expect(responseJson[0].country).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].latitude).to.be.a('number');\r",
+							"    pm.expect(responseJson[0].date).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].provinces[0].province).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].provinces[0].deaths).to.be.a('number');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/country/all?date=2020-06-01&date-format=YYYY-MM-DD&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"country",
+						"all"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2020-06-01"
+						},
+						{
+							"key": "date-format",
+							"value": "YYYY-MM-DD"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Reporte por Fecha de Todos los Paises Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([400,404]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/country/all?date=ghcfhghjhgh&date-format=YYYY-MM-DD&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"country",
+						"all"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "ghcfhghjhgh"
+						},
+						{
+							"key": "date-format",
+							"value": "YYYY-MM-DD"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Reporte por Fecha de un País",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar estructura de fecha-pais\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson[0].country).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].longitude).to.be.a('number');\r",
+							"    pm.expect(responseJson[0].provinces[0].province).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].provinces[0].recovered).to.be.a('number');\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/country/code?code=us&date=2020-05-01&date-format=YYYY-MM-DD&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"country",
+						"code"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "us"
+						},
+						{
+							"key": "date",
+							"value": "2020-05-01"
+						},
+						{
+							"key": "date-format",
+							"value": "YYYY-MM-DD"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Reporte por Fecha de un País Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/country/code?code=U&date=2020-05-01&date-format=YYYY-MM-DD&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"country",
+						"code"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "U"
+						},
+						{
+							"key": "date",
+							"value": "2020-05-01"
+						},
+						{
+							"key": "date-format",
+							"value": "YYYY-MM-DD"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Reporte por Fecha del Nombre de un Pais",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validar estructura de entidad Fecha-País\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson[0].country).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].longitude).to.be.a('number');\r",
+							"    pm.expect(responseJson[0].provinces[0].province).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].provinces[0].recovered).to.be.a('number');\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/country/name?name=México&date=2020-05-01",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"country",
+						"name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "México"
+						},
+						{
+							"key": "date",
+							"value": "2020-05-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Reporte por Fecha del Nombre de un Pais Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"    pm.response.to.be.json;\r",
+							"pm.expect(pm.response.code).to.be.oneOf([400,404]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 650ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(650);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/country/name?date=2020-05-01",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"country",
+						"name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "México",
+							"disabled": true
+						},
+						{
+							"key": "date",
+							"value": "2020-05-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Totales por Fecha",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar reporte por fecha\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson[0].confirmed).to.be.a('number');\r",
+							"    pm.expect(responseJson[0].date).to.be.a(\"string\");\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/report/totals?date=2020-05-01&date-format=YYYY-MM-DD&format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"report",
+						"totals"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2020-05-01"
+						},
+						{
+							"key": "date-format",
+							"value": "YYYY-MM-DD"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Todos los Casos hasta la fecha",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación de código de respuesta de error\",() => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar reporte de casos\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson[0].confirmed).to.be.a('number');\r",
+							"    pm.expect(responseJson[0].lastChange).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson[0].lastUpdate).to.be.a(\"string\");\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov1}}/totals?format=json",
+					"protocol": "https",
+					"host": [
+						"{{root_cov1}}"
+					],
+					"path": [
+						"totals"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "https://www.googleapis.com/auth/drive",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "blabla",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://accounts.google.com/o/oauth2/auth",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "http://localhost",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "implicit",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "GooglePhotosScript",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
