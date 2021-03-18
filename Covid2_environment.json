@@ -1,0 +1,19 @@
+{
+	"id": "38d41694-ecf4-46ce-8564-f559cb27b1f8",
+	"name": "CovidEnv",
+	"values": [
+		{
+			"key": "root_cov2",
+			"value": "api.quarantine.country",
+			"enabled": true
+		},
+		{
+			"key": "ptr",
+			"value": "https://",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2021-03-17T05:38:17.550Z",
+	"_postman_exported_using": "Postman/8.0.7"
+}

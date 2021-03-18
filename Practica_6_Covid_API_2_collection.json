@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "90da8698-6127-4c4e-ba5b-61d992efcf26",
+		"name": "Practica_6_Covid_API_2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//Tarea un response body que evalue el \"pong\"\r",
+							"pm.test(\"Vaildación en el body response palabra pong\",function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.eql(\"pong\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Campo de respuesta es cadena\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson).to.be.a(\"string\");\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov2}}/api/v1/ping",
+					"protocol": "https",
+					"host": [
+						"{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API region por dia Error 500",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación del código de respuesta 500\",() => {\r",
+							"    //Postman 200 = OK, cualquier otro valor es NOK \r",
+							"    pm.response.to.be.not.ok;\r",
+							"    pm.response.to.have.status(500);\r",
+							"    pm.expect(pm.response.code).to.eql(500);\r",
+							"    pm.response.to.have.status(\"Internal Server Error\");\r",
+							"});\r",
+							"//Manejo de variables\r",
+							"console.log (pm.environment.get(\"base_url\"));\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov2}}/api/v1/spots/day?region=mexico",
+					"protocol": "https",
+					"host": [
+						"{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"spots",
+						"day"
+					],
+					"query": [
+						{
+							"key": "region",
+							"value": "mexico"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API region por semana (-8días)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar tipo de datos body response\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson.status).to.be.a('number');\r",
+							"    pm.expect(responseJson.type).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson.data['2021-02-24'].deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data['2021-02-24'].death_ratio).to.be.a('number');\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_cov2}}/api/v1/spots/week?region=mexico",
+					"host": [
+						"{{ptr}}{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"spots",
+						"week"
+					],
+					"query": [
+						{
+							"key": "region",
+							"value": "mexico"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API region por mes(s)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar tipo de datos body response\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson.status).to.be.a('number');\r",
+							"    pm.expect(responseJson.type).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson.data['2021-02-24'].deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data['2021-02-24'].death_ratio).to.be.a('number');\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_cov2}}/api/v1/spots/month?region=russia",
+					"host": [
+						"{{ptr}}{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"spots",
+						"month"
+					],
+					"query": [
+						{
+							"key": "month",
+							"value": "01",
+							"disabled": true
+						},
+						{
+							"key": "region",
+							"value": "russia"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API region por año",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar tipo de datos body response\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson.status).to.be.a('number');\r",
+							"    pm.expect(responseJson.type).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson.data['2021-02-24'].deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data['2021-02-24'].death_ratio).to.be.a('number');\r",
+							"    });\r",
+							"\r",
+							"    pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ptr}}{{root_cov2}}/api/v1/spots/year?region=mexico",
+					"host": [
+						"{{ptr}}{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"spots",
+						"year"
+					],
+					"query": [
+						{
+							"key": "region",
+							"value": "mexico"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API por region",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar tipo de datos body response\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson.status).to.be.a('number');\r",
+							"    pm.expect(responseJson.type).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson.data.summary.deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data.summary.recovery_ratio).to.be.a('number');\r",
+							"    pm.expect(responseJson.data.change.deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data.change.recovery_ratio).to.be.a('number');\r",
+							"    });\r",
+							"   \r",
+							"\r",
+							"    pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov2}}/api/v1/summary/region?region=mexico&sub_area=1",
+					"protocol": "https",
+					"host": [
+						"{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"summary",
+						"region"
+					],
+					"query": [
+						{
+							"key": "region",
+							"value": "mexico"
+						},
+						{
+							"key": "sub_area",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API Ultima actualizacion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar tipo de datos body response\", function(){\r",
+							"    const responseJson = pm.response.json();\r",
+							"    console.log (\"respuesta:\", responseJson);\r",
+							"    pm.expect(responseJson.status).to.be.a('number');\r",
+							"    pm.expect(responseJson.type).to.be.a(\"string\");\r",
+							"    pm.expect(responseJson.data.summary.deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data.summary.recovery_ratio).to.be.a('number');\r",
+							"    pm.expect(responseJson.data.change.deaths).to.be.a('number');\r",
+							"    pm.expect(responseJson.data.change.recovery_ratio).to.be.a('number');\r",
+							"    });\r",
+							"   \r",
+							"\r",
+							"    pm.test(\"Validar el tiempo de respeusta menor a 1000ms\", function() {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{root_cov2}}/api/v1/summary/latest",
+					"protocol": "https",
+					"host": [
+						"{{root_cov2}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"summary",
+						"latest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POKE Contest Types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validación código de estatus 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"const sabor_baya = responseJson.name;\r",
+							"\r",
+							"pm.test(\"Sabor de baya es cadena\", function(){\r",
+							"   //console.log (\"Respuesta:\", responseJson.berry_flavor.name);\r",
+							"    pm.expect(responseJson.berry_flavor.name).to.be.a(\"string\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Campo ID es número\", function(){\r",
+							"   //console.log (\"Respuesta:\", responseJson.id);\r",
+							"    pm.expect(responseJson.id).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Atributo color en idioma francés es cadena\", function(){\r",
+							"    console.log(\"todo\", responseJson);\r",
+							"   console.log (\"Respuesta:\", responseJson.names[0].color);\r",
+							"    pm.expect(responseJson.names[0].color).to.be.a(\"string\");\r",
+							"   });\r",
+							"\r",
+							"pm.test(\"Atributo nombre de la baya en idioma francés es cadena\", function(){\r",
+							"   console.log (\"Respuesta:\", responseJson.names[0].name);\r",
+							"    pm.expect(responseJson.names[0].color).to.be.a(\"string\");\r",
+							"   })\r",
+							"\r",
+							"pm.test(\"Atributo color de la baya en idioma inglés es cadena\", function(){\r",
+							"   console.log (\"Respuesta:\", responseJson.names[1].color);\r",
+							"    pm.expect(responseJson.names[1].color).to.be.a(\"string\");\r",
+							"   });\r",
+							"\r",
+							"pm.test(\"Atributo nombre de la baya en idioma inglés es cadena\", function(){\r",
+							"   console.log (\"Respuesta:\", responseJson.names[1].name);\r",
+							"    pm.expect(responseJson.names[1].color).to.be.a(\"string\");\r",
+							"   })\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://pokeapi.co/api/v2/contest-type/1",
+					"protocol": "https",
+					"host": [
+						"pokeapi",
+						"co"
+					],
+					"path": [
+						"api",
+						"v2",
+						"contest-type",
+						"1"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "cool",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
